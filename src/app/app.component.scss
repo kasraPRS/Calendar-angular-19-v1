@@ -1,0 +1,39 @@
+.container {
+  width: 300px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.item-list {
+  border: 2px dashed #ccc;
+  padding: 10px;
+  min-height: 150px;
+  max-width: 300px;
+  margin-bottom: 20px;
+}
+
+.item {
+  padding: 10px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.item.selected {
+  background-color: lightgreen;
+}
+
+.selected-items {
+  padding-top: 20px;
+  border-top: 2px solid #ccc;
+}
+
+.selected-items ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.selected-items li {
+  margin: 5px 0;
+}

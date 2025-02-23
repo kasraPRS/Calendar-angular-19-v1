@@ -1,0 +1,42 @@
+/* You can add global styles to this file, and also import other style files */
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+table {
+  width: 100%;
+}
+
+::ng-deep .mat-row:hover {
+  background-color: blue; /* Set your desired color */
+}
+
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+
+mat-card-content {
+  margin-top: 5% !important;
+  margin-bottom: 5% !important;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+mat-grid-tile {
+  background: lightblue;
+}
+
+mat-icon {
+  font-size: 40px;
+}

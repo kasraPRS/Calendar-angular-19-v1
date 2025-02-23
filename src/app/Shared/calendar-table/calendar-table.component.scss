@@ -1,0 +1,226 @@
+.table-week-view {
+  td, th {
+    width: 50px !important;
+    height: 50px !important;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+  }
+
+  td:nth-child(odd) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  td:nth-child(even) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  tr:nth-child(odd) td:nth-child(odd) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  tr:nth-child(odd) td:nth-child(even) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  tr:nth-child(even) td:nth-child(odd) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+
+  tr:nth-child(even) td:nth-child(even) {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+
+.table-mount-view {
+  td, th {
+    width: 100px !important;
+    height: 100px !important;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #ddd;
+  }
+
+  td:nth-child(odd) {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  td:nth-child(even) {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  tr:nth-child(odd) td:nth-child(odd) {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  tr:nth-child(odd) td:nth-child(even) {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  tr:nth-child(even) td:nth-child(odd) {
+    width: 100px !important;
+    height: 100px !important;
+  }
+
+  tr:nth-child(even) td:nth-child(even) {
+    width: 100px !important;
+    height: 100px !important;
+  }
+}
+
+.draggable-div {
+  position: absolute;
+  top: 50px; /* مقدار اولیه موقعیت */
+  left: 100px; /* مقدار اولیه موقعیت */
+  width: 100px;
+  height: 50px;
+  background-color: #3f51b5;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: grab;
+  z-index: 1000;
+}
+
+.cdk-drag-preview {
+  z-index: 2000;
+}
+
+.cdk-drag-placeholder {
+  display: none !important;
+}
+
+mat-grid-list {
+  height: 30px !important;
+}
+
+.calendar-container-header {
+  display: flex;
+  width: 100%;
+  height: 80px;
+
+  .example-box-header {
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    background: white;
+    font-size: 14px;
+    height: 48px;
+    width: 200px;
+
+  }
+
+  .example-box-day {
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    background: white;
+    font-size: 14px;
+    height: 100%;
+    width: 200px;
+  }
+}
+
+.calendar-container {
+  display: flex;
+  justify-content: start;
+  border-top: solid 1px #ccc;
+
+  .example-list {
+    margin-top: 2%;
+    width: 200px;
+    max-width: 100%;
+    border: solid 1px #ccc;
+    min-height: 48px;
+    display: block;
+    background: white;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .example-box {
+    padding: 20px 10px;
+    border-bottom: solid 1px #ccc;
+    color: rgba(0, 0, 0, 0.87);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    cursor: move;
+    background: white;
+    font-size: 14px;
+    height: 48px;
+  }
+
+
+  .cdk-drag-preview {
+    box-sizing: border-box;
+    border-radius: 4px;
+    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+
+  .cdk-drag-animating {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .example-box:last-child {
+    border: none;
+  }
+
+  .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+
+  .example-custom-placeholder {
+    background: #ccc;
+    border: dotted 3px #999;
+    min-height: 60px;
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+
+mat-list {
+  margin-top: 2%;
+}
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+
+.selected-area {
+  position: absolute;
+  background-color: rgba(0, 0, 255, 0.3);
+  border: 2px solid blue;
+}
+
+.event-card {
+  position: absolute;
+  max-width: 200px;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}

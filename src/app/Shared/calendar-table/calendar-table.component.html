@@ -1,0 +1,218 @@
+<dst-menu (selectCalendarType)="showWeekView($event)"></dst-menu>
+<div class="calendar-container-header">
+  <div class="example-box-header"></div>
+    <div *ngFor="let day of dayNames" class="example-box-day" >
+      <p>{{day}}</p>
+      <mat-icon *ngIf="setActiveDay(day,today)" matBadge="{{today.getDate()}}">check</mat-icon>
+    </div>
+
+</div>
+
+<div class="calendar-container" *ngIf="selectCalenderType === 'WEEK' && weekModelDto">
+  <div class="example-list">
+    @for (time of timeArray; track time) {
+    <div cdkDrag class="example-box">{{time}}</div>
+    }
+  </div>
+
+  <div cdkDropList
+       class="example-list"
+       (cdkDropListDropped)="drop($event)"
+       [cdkDropListSortPredicate]="sortPredicate">
+    @for (data of weekModelDto.SUNDAY; track data) {
+          <div
+           (click)="addEvent(data, data?.time)"
+            class="example-box"
+            [cdkDragData]="data"
+            cdkDrag>{{data.time}}</div>
+    }
+  </div>
+  <div class="example-list">
+    @for (data of weekModelDto.MONDAY; track data) {
+    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    }
+  </div>
+  <div class="example-list">
+    @for (data of weekModelDto.TUESDAY; track data) {
+    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    }
+  </div>
+    <div class="example-list">
+    @for (data of weekModelDto.WEDNESDAY; track data) {
+    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    }
+  </div>
+
+  <div class="example-list">
+    @for (data of weekModelDto.THURSDAY; track data) {
+    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    }
+  </div>
+
+    <div class="example-list">
+    @for (data of weekModelDto.FRIDAY; track data) {
+    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    }
+  </div>
+
+  <div class="example-list">
+    @for (data of weekModelDto.SATURDAY; track data) {
+    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    }
+  </div>
+
+
+<!--  <div *ngIf="events.length">-->
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      class="example-list"-->
+<!--      (cdkDropListDropped)="drop($event)"-->
+<!--    >-->
+<!--      @for (data of weekModelDto.SUNDAY; track data) {-->
+<!--      <div-->
+<!--        class="example-box"-->
+<!--        [cdkDragData]="data"-->
+<!--        cdkDrag></div>-->
+<!--      }-->
+<!--    </div>-->
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      class="example-list"-->
+<!--      (cdkDropListDropped)="drop($event)"-->
+<!--    >-->
+<!--      @for (data of weekModelDto.MONDAY; track data) {-->
+<!--      <div-->
+<!--        class="example-box"-->
+<!--        [cdkDragData]="data"-->
+<!--        cdkDrag></div>-->
+<!--      }-->
+<!--    </div>-->
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      class="example-list"-->
+<!--      (cdkDropListDropped)="drop($event)"-->
+<!--    >-->
+<!--      @for (data of weekModelDto.TUESDAY; track data) {-->
+<!--      <div-->
+<!--        class="example-box"-->
+<!--        [cdkDragData]="data"-->
+<!--        cdkDrag></div>-->
+<!--      }-->
+<!--    </div>-->
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      class="example-list"-->
+<!--      (cdkDropListDropped)="drop($event)"-->
+<!--    >-->
+<!--      @for (data of weekModelDto.WEDNESDAY; track data) {-->
+<!--      <div-->
+<!--        class="example-box"-->
+<!--        [cdkDragData]="data"-->
+<!--        cdkDrag></div>-->
+<!--      }-->
+<!--    </div>-->
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      class="example-list"-->
+<!--      (cdkDropListDropped)="drop($event)"-->
+<!--    >-->
+<!--      @for (data of weekModelDto.THURSDAY; track data) {-->
+<!--      <div-->
+<!--        class="example-box"-->
+<!--        [cdkDragData]="data"-->
+<!--        cdkDrag></div>-->
+<!--      }-->
+<!--    </div>-->
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      class="example-list"-->
+<!--      (cdkDropListDropped)="drop($event)"-->
+<!--    >-->
+<!--      @for (data of weekModelDto.FRIDAY; track data) {-->
+<!--      <div-->
+<!--        class="example-box"-->
+<!--        [cdkDragData]="data"-->
+<!--        cdkDrag></div>-->
+<!--      }-->
+<!--    </div>-->
+<!--    <div-->
+<!--      cdkDropList-->
+<!--      class="example-list"-->
+<!--      (cdkDropListDropped)="drop($event)"-->
+<!--    >-->
+<!--      @for (data of weekModelDto.SATURDAY; track data) {-->
+<!--      <div-->
+<!--        class="example-box"-->
+<!--        [cdkDragData]="data"-->
+<!--        cdkDrag></div>-->
+<!--      }-->
+<!--    </div>-->
+<!--  </div>-->
+
+</div>
+
+
+
+
+<div *ngIf="selectCalenderType === 'MOUNT'">
+  <table [dataSource]="dataSourceMonth" class="mat-elevation-z8 table-mount-view " mat-table>
+
+
+    <ng-container matColumnDef="sun">
+      <th *matHeaderCellDef mat-header-cell> SUN</th>
+      <td *matCellDef="let element" (click)="addEvent(element.SUNDAY, element.time)" mat-cell>
+        {{ element.SUNDAY | dateFormat:'dd'}}
+      </td>
+    </ng-container>
+
+    <!-- Name Column -->
+    <ng-container matColumnDef="mon">
+      <th *matHeaderCellDef mat-header-cell> MON</th>
+      <td *matCellDef="let element" (click)="addEvent(element.MONDAY, element.time)" mat-cell>
+        {{element.MONDAY | dateFormat:'dd'}}
+      </td>
+    </ng-container>
+
+    <!-- Weight Column -->
+    <ng-container matColumnDef="tue">
+      <th *matHeaderCellDef mat-header-cell> TUE</th>
+      <td *matCellDef="let element" (click)="addEvent(element.TUESDAY, element.time)" mat-cell>
+        {{element.TUESDAY | dateFormat:'dd'}}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="wed">
+      <th *matHeaderCellDef mat-header-cell> WED</th>
+      <td *matCellDef="let element" (click)="addEvent(element.WEDNESDAY, element.time)" mat-cell>
+        {{element.WEDNESDAY | dateFormat:'dd'}}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="thu">
+      <th *matHeaderCellDef mat-header-cell> THU</th>
+      <td *matCellDef="let element" (click)="addEvent(element.THURSDAY, element.time)" mat-cell>
+        {{element.THURSDAY | dateFormat:'dd'}}
+      </td>
+    </ng-container>
+
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="fri">
+      <th *matHeaderCellDef mat-header-cell> FRI</th>
+      <td *matCellDef="let element" (click)="addEvent(element.FRIDAY, element.time)" mat-cell>
+        {{element.FRIDAY | dateFormat:'dd'}}
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="sat">
+      <th *matHeaderCellDef mat-header-cell> SAT</th>
+      <td *matCellDef="let element" (click)="addEvent(element.SATURDAY, element.time)" mat-cell>
+        {{element.SATURDAY | dateFormat:'dd'}}
+      </td>
+    </ng-container>
+    <tr *matHeaderRowDef="displayedColumnsForMount" mat-header-row></tr>
+    <tr *matRowDef="let row; columns: displayedColumnsForMount;" mat-row></tr>
+  </table>
+
+</div>
