@@ -3,11 +3,11 @@ import {EventsDTO} from "./EventModel";
 import {DayModelDto} from "./DayModelDto.dto";
 
 export class WeekModelDto {
-    SUNDAY?: { hours: DayModelDto[], events: EventsDTO[] };
-    MONDAY?: { hours: DayModelDto[], events: EventsDTO[] };
-    TUESDAY?: { hours: DayModelDto[], events: EventsDTO[] };
-    WEDNESDAY?: { hours: DayModelDto[], events: EventsDTO[] };
-    THURSDAY?: { hours: DayModelDto[], events: EventsDTO[] };
-    FRIDAY?: { hours: DayModelDto[], events: EventsDTO[] };
-    SATURDAY?: { hours: DayModelDto[], events: EventsDTO[] };
+    SUNDAY?: { hours: DayModelDto[] };
+    MONDAY?: { hours: DayModelDto[] };
+    TUESDAY?: { hours: DayModelDto[] };
+    WEDNESDAY?: { hours: DayModelDto[] };
+    THURSDAY?: { hours: DayModelDto[] };
+    FRIDAY?: { hours: DayModelDto[] };
+    SATURDAY?: { hours: DayModelDto[] };
 }

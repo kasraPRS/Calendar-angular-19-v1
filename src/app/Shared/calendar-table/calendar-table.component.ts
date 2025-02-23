@@ -10,8 +10,9 @@ import {MenuTypeEnum} from '../../enum/menu-type.enum';
 import {
     CdkDrag,
     CdkDragDrop,
-    DragDropModule,
-    moveItemInArray
+    CdkDragPlaceholder,
+    CdkDropList, DragDropModule,
+    moveItemInArray,
 } from '@angular/cdk/drag-drop';
 import {DayModel} from '../../Models/DayModel';
 import {MatDialog} from '@angular/material/dialog';
@@ -27,6 +28,7 @@ import {DataTransferService} from "../../Utilities Services/data-transfer.servic
 import {Subscription} from "rxjs";
 import {WeekService} from "../../Utilities Services/week.service";
 import {WeekDTO} from "../../Models/weekDto";
+import {OverlayModule} from "@angular/cdk/overlay";
 
 @Component({
     selector: 'dst-calendar-table',
@@ -43,14 +45,18 @@ import {WeekDTO} from "../../Models/weekDto";
         MatListModule,
         MatIconModule,
         MatCardModule,
+        CdkDropList,
+        CdkDrag,
+        OverlayModule,
+        CdkDropList, CdkDrag, CdkDragPlaceholder
     ],
     templateUrl: './calendar-table.component.html',
     styleUrl: './calendar-table.component.scss'
 })
 export class CalendarTableComponent implements OnInit, OnDestroy {
-    displayedColumnsForMount: string[] = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
     dataSource: DayModel[] = [];
-    weekModelDto:WeekModelDto;
+    weekModelDto: WeekModelDto;
+    weekDto: WeekDTO = {days: []};
     dataSourceMonth: DayModel[] = [];
     timeArray: string[] = [];
     today = new Date();
@@ -58,7 +64,7 @@ export class CalendarTableComponent implements OnInit, OnDestroy {
     events: EventsDTO[] = [];
     dayNames = Object.keys(DayNamesEnum)
     subscription: Subscription[] = [];
-    daysWithEvents: DayModel[] = [];
+    isOpen = false;
 
     constructor(
         private _calendarAssignmentService: CalendarDateAssignmentService,
@@ -74,9 +80,12 @@ export class CalendarTableComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this._weekService.getWeek().subscribe(
-            updateWeek => {
-                if(updateWeek){
-                    // this.weekModelDto = updateWeek
+            (updateWeek) => {
+                if (updateWeek) {
+                    this.weekDto = updateWeek
+                    console.log('week Dto', this.weekDto)
+                    this.weekModelDto = this._calendarAssignmentService.createCalendarWeekDtoModel();
+                    console.log('week model', this.weekModelDto)
                 }
             }
         )
@@ -89,12 +98,7 @@ export class CalendarTableComponent implements OnInit, OnDestroy {
 
 
     initCalendarByMount() {
-        this._calendarAssignmentService.generateWeekCalendar(new Date().getFullYear(), new Date().getMonth())
-        //     .pipe().subscribe(
-        //     dataSourceMonth => {
-        //         this.dataSourceMonth = [...dataSourceMonth];
-        //     }
-        // );
+        this.dataSourceMonth = this._calendarAssignmentService.generateWeekCalendar(new Date().getFullYear(), new Date().getMonth())
     }
 
 
@@ -102,7 +106,7 @@ export class CalendarTableComponent implements OnInit, OnDestroy {
         return this.dayNames[today.getDay()] === dayName
     }
 
-    addEvent(element: any, selectedRowTime: string[] = []) {
+    addEvent(element: any) {
         this.subscription.push(
             this.dialog.open(AddEventComponent, {
                 minWidth: '500px',
@@ -110,40 +114,12 @@ export class CalendarTableComponent implements OnInit, OnDestroy {
             }).afterClosed().subscribe((event: EventsDTO) => {
                 if (event) {
                     this._weekService.addOrUpdateEvent(event);
-
-                    // this.setEventToDay(event);
-                    // this.initCalendarByWeek();
                     this.cd.detectChanges();
                 }
             })
         )
     }
 
-    setEventToDay(event: EventsDTO) {
-        // this.subscription.push(
-        //     this._dataTransfer.weeks.subscribe(
-        //         (days: DayModel[]) => {
-        //             this.dataSource = days;
-        //         }
-        //     )
-        // )
-        //
-        // this.dataSource = this.dataSource.map(day => {
-        //     if (day?.date?.getDate() === event.fromTime?.getDate() && day?.date?.getDay() === event.fromTime?.getDay()) {
-        //         if (day.events) {
-        //             day.events.push(event);
-        //             this.events.push(event)
-        //         } else {
-        //             day.events = [event];
-        //             this.events = [event];
-        //         }
-        //     }
-        //     return day;
-        // });
-        //
-        // this._dataTransfer.setEventData(this.events)
-        // this._dataTransfer.setWeekData(this.dataSource);
-    }
 
     showWeekView(status: MenuTypeEnum) {
         this.selectCalenderType = status;
@@ -152,8 +128,8 @@ export class CalendarTableComponent implements OnInit, OnDestroy {
         }
     }
 
-    drop(event: CdkDragDrop<unknown>) {
-        // moveItemInArray(this.weekModelDto?.SUNDAY!, event.previousIndex, event.currentIndex);
+    drop(event: CdkDragDrop<string[]>) {
+        moveItemInArray(this.weekModelDto?.SUNDAY?.hours!, event.previousIndex, event.currentIndex);
     }
 
     /**

@@ -77,31 +77,24 @@ export class CalendarDateAssignmentService {
 
                     'SUNDAY': {
                         hours: this.weeks.filter(day => day.dayName === DayNamesEnum.SUNDAY),
-                        events: this.events
                     },
                     'MONDAY': {
                         hours: this.weeks.filter(day => day.dayName === DayNamesEnum.MONDAY),
-                        events: this.events
                     },
                     'TUESDAY': {
                         hours: this.weeks.filter(day => day.dayName === DayNamesEnum.TUESDAY),
-                        events: this.events
                     },
                     'WEDNESDAY': {
                         hours: this.weeks.filter(day => day.dayName === DayNamesEnum.WEDNESDAY),
-                        events: this.events
                     },
                     'THURSDAY': {
                         hours: this.weeks.filter(day => day.dayName === DayNamesEnum.THURSDAY),
-                        events: this.events
                     },
                     'FRIDAY': {
                         hours: this.weeks.filter(day => day.dayName === DayNamesEnum.FRIDAY),
-                        events: this.events
                     },
                     'SATURDAY': {
                         hours: this.weeks.filter(day => day.dayName === DayNamesEnum.SATURDAY),
-                        events: this.events
                     },
                 }
                 this.weekModelDto = weekModel;

@@ -9,53 +9,53 @@
 </div>
 
 <div class="calendar-container" *ngIf="selectCalenderType === 'WEEK' && weekModelDto">
-  <div class="example-list">
+  <div  class="example-list">
     @for (time of timeArray; track time) {
     <div cdkDrag class="example-box">{{time}}</div>
     }
   </div>
 
-  <div class="example-list">
+  <div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
     @for (data of weekModelDto.SUNDAY?.hours; track data) {
-    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    <div class="example-box" (click)="addEvent(data)" cdkDrag>
+     <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+    {{data.time}}
+    </div>
     }
   </div>
   <div class="example-list">
     @for (data of weekModelDto.MONDAY?.hours; track data) {
-    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    <div class="example-box" (click)="addEvent(data)"></div>
     }
   </div>
   <div class="example-list">
     @for (data of weekModelDto.TUESDAY?.hours; track data) {
-    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    <div class="example-box" (click)="addEvent(data)"></div>
     }
   </div>
     <div class="example-list">
     @for (data of weekModelDto.WEDNESDAY?.hours; track data) {
-    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    <div class="example-box" (click)="addEvent(data)"></div>
     }
   </div>
 
   <div class="example-list">
     @for (data of weekModelDto.THURSDAY?.hours; track data) {
-    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    <div class="example-box" (click)="addEvent(data)"></div>
     }
   </div>
 
     <div class="example-list">
     @for (data of weekModelDto.FRIDAY?.hours; track data) {
-    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    <div class="example-box" (click)="addEvent(data)"></div>
     }
   </div>
 
   <div class="example-list">
     @for (data of weekModelDto.SATURDAY?.hours; track data) {
-    <div class="example-box" (click)="addEvent(data, data?.time)"></div>
+    <div class="example-box" (click)="addEvent(data)"></div>
     }
   </div>
-
-
-
 </div>
 
 

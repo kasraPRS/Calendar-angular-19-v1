@@ -80,8 +80,8 @@
 
 .draggable-div {
   position: absolute;
-  top: 50px; /* مقدار اولیه موقعیت */
-  left: 100px; /* مقدار اولیه موقعیت */
+  top: 50px;
+  left: 100px;
   width: 100px;
   height: 50px;
   background-color: #3f51b5;
@@ -164,10 +164,11 @@ mat-grid-list {
     align-items: center;
     justify-content: space-between;
     box-sizing: border-box;
-    cursor: move;
     background: white;
     font-size: 14px;
     height: 48px;
+
+
   }
 
 
@@ -224,3 +225,11 @@ mat-list {
   padding: 10px;
   margin-top: 10px;
 }
+
+
+.event-card{
+  width: 100%;
+  background: blue;
+  min-height: 450px;
+}
+
