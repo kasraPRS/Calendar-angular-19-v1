@@ -18,83 +18,84 @@ const year = today.getFullYear();
 
 
 @Component({
-  selector: 'dst-add-event',
-  standalone: true,
-  imports: [
-    MatFormFieldModule,
-    MatButtonModule,
-    MatCardModule,
-    MatInputModule,
-    MatDatepickerModule,
-    MatTimepickerModule,
-    FormsModule,
-    ReactiveFormsModule,
-    CommonModule,
-    MatDialogModule
-  ],
-  providers: [provideNativeDateAdapter(),
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './add-event.component.html',
-  styleUrl: './add-event.component.scss'
+    selector: 'dst-add-event',
+    standalone: true,
+    imports: [
+        MatFormFieldModule,
+        MatButtonModule,
+        MatCardModule,
+        MatInputModule,
+        MatDatepickerModule,
+        MatTimepickerModule,
+        FormsModule,
+        ReactiveFormsModule,
+        CommonModule,
+        MatDialogModule
+    ],
+    providers: [provideNativeDateAdapter(),
+    ],
+    changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './add-event.component.html',
+    styleUrl: './add-event.component.scss'
 })
 export class AddEventComponent implements OnInit {
-  formDate!: FormGroup;
-  dayEvents: EventsDTO = {};
-  day:DayModel = {}
+    formDate!: FormGroup;
+    day: DayModel = {}
+    defaultTime: Date = new Date();
+    id: number = 0
 
-  constructor(
-    private _fb: FormBuilder,
-    public dialogRef: MatDialogRef<AddEventComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: DayModel,
-    private cd: ChangeDetectorRef
-  ) {
-  }
+    constructor(
+        private _fb: FormBuilder,
+        public dialogRef: MatDialogRef<AddEventComponent>,
+        @Inject(MAT_DIALOG_DATA) private data: DayModel,
+        private cd: ChangeDetectorRef,
+    ) {
+    }
 
 
-  close() {
-    this.dialogRef.close(this.dayEvents);
-  }
+    close() {
+        this.dialogRef.close();
+    }
 
-  ngOnInit(): void {
-    this.initForm();
-  }
+    ngOnInit(): void {
+        this.initForm();
+    }
 
-  initForm(): void {
-    const defaultTime = this.convertTimeStringToDate(this.data?.time)
-    this.formDate = this._fb.group({
-      title: new FormControl(''),
-      fromTime: new FormControl(defaultTime),
-      toTime: new FormControl(''),
-      date: new FormControl(this.data?.date || new Date())
-    })
-  }
+    initForm(): void {
+        this.formDate = this._fb.group({
+            title: new FormControl(''),
+            fromTime: new FormControl(),
+            toTime: new FormControl(''),
+            date: new FormControl(this.data?.date || new Date().toISOString().split('T')[0])
+            // date: new FormControl( new Date().toISOString().split('T')[0])
+        })
+    }
 
-  convertTimeStringToDate(timeString: any): Date {
-    const [hours, minutes] = timeString.split(':').map(Number); // Remove [0]
-    const date = this.data?.date!;
-    date?.setHours(hours, minutes, 0, 0);
-    return date;
-  }
+    submitEvent() {
+        const formData = this.formDate.value;
+        const fromDate = new Date(formData.fromTime);
+        const toDate = new Date(formData.toTime);
 
-  submitEvent() {
-    const formData = this.formDate.value;
-    const fromDate = new Date(formData.fromTime);
-    const toDate = new Date(formData.toTime);
+        // toDate.setFullYear(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
 
-    toDate.setFullYear(fromDate.getFullYear(), fromDate.getMonth(), fromDate.getDate());
+        toDate.toString();// Sun Feb 16 2025 23:00:00 GMT+0330 (Iran Standard Time)
 
-    toDate.toString();// Sun Feb 16 2025 23:00:00 GMT+0330 (Iran Standard Time)
+        formData.toTime = toDate;
+        formData.fromTime = fromDate;
 
-    formData.toTime = toDate;
-    this.createEvent(this.formDate.value);
-    this.dialogRef.close(this.dayEvents);
-    this.formDate.reset();
-    this.cd.detectChanges();
-  }
+        const eventDate: EventsDTO = {...formData, id: this.generateId()}
+        // this.createEvent(formData);
+        this.dialogRef.close(eventDate);
+        this.formDate.reset();
+        this.cd.detectChanges();
+    }
 
-  createEvent(formDate: EventsDTO) {
-    this.day = {...this.data,events:[formDate]}
-    console.log(this.day)
-  }
+    generateId(): string {
+        const date = new Date()
+        return (date.getFullYear() + date.getMonth() + date.getTime()).toString()
+    }
+
+    createEvent(formDate: EventsDTO) {
+        // this._createEvent.createModel(formDate)
+    }
 }

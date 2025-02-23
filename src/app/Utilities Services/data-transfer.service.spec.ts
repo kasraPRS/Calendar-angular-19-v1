@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { CreateEventService } from './create-event.service';
+import { DataTransferService } from './data-transfer.service';
 
-describe('CreateEventService', () => {
-  let service: CreateEventService;
+describe('DataTransferService', () => {
+  let service: DataTransferService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(CreateEventService);
+    service = TestBed.inject(DataTransferService);
   });
 
   it('should be created', () => {

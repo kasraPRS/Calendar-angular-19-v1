@@ -1,6 +1,5 @@
 import {DayModel} from "./DayModel";
 
-export class WeekDTO {
-  time?: string[] = [];
-  days?:DayModel[] = [];
+export interface WeekDTO {
+  days:DayModel[];
 }
