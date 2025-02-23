@@ -168,6 +168,8 @@ mat-grid-list {
     background: white;
     font-size: 14px;
     height: 48px;
+
+
   }
 
 
@@ -223,4 +225,11 @@ mat-list {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
+}
+
+
+.event-card{
+  width: 100%;
+  background: blue;
+  min-height: 450px;
 }
