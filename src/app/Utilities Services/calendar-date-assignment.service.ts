@@ -1,76 +1,83 @@
 import {Injectable} from '@angular/core';
 import {DayModel} from '../Models/DayModel';
 import {DayNamesEnum} from '../enum/day-names.enum';
-import {BehaviorSubject, Observable} from 'rxjs';
-import {MonthModelDto} from '../Models/MonthModelDto';
+import {DataTransferService} from "./data-transfer.service";
+import {EventsDTO} from "../Models/EventModel";
 
 @Injectable({
   providedIn: 'root'
 })
 export class CalendarDateAssignmentService {
-  weeks = new BehaviorSubject<DayModel[]>([]);
+  weeks:DayModel[] = []
   timeArray: string[] = [];
   dayNames = Object.keys(DayNamesEnum)
-  mount = new BehaviorSubject<MonthModelDto>({});
 
-  constructor() {
+  constructor(
+      private _dataTransfer:DataTransferService
+  ) {
   }
 
-  generateWeekCalendar(year: number, month: number): Observable<DayModel[]> {
+  generateWeekCalendar(year: number, month: number) {
     const startOfMonth = new Date(year, month, 1);  // The first day of the month
     const endOfMonth = new Date(year, month + 1, 0); // Last day of the month
     let weekId = 0;
-
     let currentDate = this.getStartOfWeek(startOfMonth); // Start from the first Sunday or beginning of the week
     while (startOfMonth <= endOfMonth) {  // use <= to include the last day of the month
+      this.setTimeForCalendar();
       this.dayNames.forEach((day) => {
         switch (day) {
           case "SATURDAY":
-            this.weeks.value.push(this.createDayModelDTO(currentDate, DayNamesEnum.SATURDAY, weekId, this.timeArray));
+            this.weeks.push(this.createDayModelDTO(currentDate, DayNamesEnum.SATURDAY, weekId, this.timeArray));
             break;
           case "SUNDAY":
-            this.weeks.value.push(this.createDayModelDTO(currentDate, DayNamesEnum.SUNDAY, weekId, this.timeArray));
+            this.weeks.push(this.createDayModelDTO(currentDate, DayNamesEnum.SUNDAY, weekId, this.timeArray));
             break;
           case "MONDAY":
-            this.weeks.value.push(this.createDayModelDTO(currentDate, DayNamesEnum.MONDAY, weekId, this.timeArray));
+            this.weeks.push(this.createDayModelDTO(currentDate, DayNamesEnum.MONDAY, weekId, this.timeArray));
             break;
           case "TUESDAY":
-            this.weeks.value.push(this.createDayModelDTO(currentDate, DayNamesEnum.TUESDAY, weekId, this.timeArray));
+            this.weeks.push(this.createDayModelDTO(currentDate, DayNamesEnum.TUESDAY, weekId, this.timeArray));
             break;
           case "WEDNESDAY":
-            this.weeks.value.push(this.createDayModelDTO(currentDate, DayNamesEnum.WEDNESDAY, weekId, this.timeArray));
+            this.weeks.push(this.createDayModelDTO(currentDate, DayNamesEnum.WEDNESDAY, weekId, this.timeArray));
             break;
           case "THURSDAY":
-            this.weeks.value.push(this.createDayModelDTO(currentDate, DayNamesEnum.THURSDAY, weekId, this.timeArray));
+            this.weeks.push(this.createDayModelDTO(currentDate, DayNamesEnum.THURSDAY, weekId, this.timeArray));
             break;
           case "FRIDAY":
-            this.weeks.value.push(this.createDayModelDTO(currentDate, DayNamesEnum.FRIDAY, weekId, this.timeArray));
+            this.weeks.push(this.createDayModelDTO(currentDate, DayNamesEnum.FRIDAY, weekId, this.timeArray));
             break;
         }
       });
       weekId++;
+      this._dataTransfer.setWeekData(this.weeks);
     }
-
-    // const mount = {
-    //   firstWeek:this.weeks?.value.filter(week => week.weekId === 0),
-    //   secondWeek : this.weeks?.value.filter(week => week.weekId === 1),
-    //   thirdWeek : this.weeks?.value.filter(week => week.weekId === 2),
-    //   fourthWeek : this.weeks?.value.filter(week => week.weekId === 3)
-    // }
-    // this.mount.next(mount)
-    return this.weeks;
   }
 
+  setTimeForCalendar():string[] {
+    const now = new Date();
+    const endTime = new Date();
+    endTime.setHours(23, 0, 0, 0); // Set to 11:00 PM
+    let currentTime = new Date(); // Clone the current date
+    currentTime.setHours(0, 0, 0)
 
+
+    while (currentTime <= endTime) {
+      const hours = currentTime.getHours().toString().padStart(2, '0'); // Ensure 2 digits
+      const minutes = currentTime.getMinutes().toString().padStart(2, '0');
+      this.timeArray.push(`${hours}:${minutes}`); // Push time as HH:mm
+      currentTime.setMinutes(currentTime.getMinutes() + 60); // Increment by 30 minutes
+    }
+    return this.timeArray;
+  }
   createDayModelDTO(currentDate: Date, dayName: DayNamesEnum, weekId: number, time: string[]): DayModel {
     const dayOfWeek = currentDate.getDay();
-    let dayModel: DayModel = {weekId: weekId, date: currentDate, dayName: dayName, time: time};
+    let dayModel: DayModel = {weekId: weekId, date: currentDate, dayName: dayName, time: time, events:[]};
 
     if (dayOfWeek !== this.getDayIndex(dayName)) {
       dayModel.date = new Date(currentDate);
     }
     currentDate.setDate(currentDate.getDate() + 1);
-
     return dayModel;
 
   }

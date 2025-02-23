@@ -1,23 +1,46 @@
-import {Injectable} from '@angular/core';
+// noinspection BadExpressionStatementJS
+
+import {Injectable, OnDestroy} from '@angular/core';
 import {DayModel} from '../Models/DayModel';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Subscription} from 'rxjs';
+import {DataTransferService} from "./data-transfer.service";
+import {EventsDTO} from "../Models/EventModel";
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root'
 })
-export class CreateEventService {
-  dataSource = new BehaviorSubject<DayModel[]>([]);
-  day: DayModel = {};
-  dayModel: DayModel = {};
+export class CreateEventService implements OnDestroy {
+    dataSource = new BehaviorSubject<DayModel[]>([]);
+    day: DayModel = {};
+    weeks: DayModel[] = [];
+    subscription: Subscription[] = []
 
-  constructor() {
-  }
+    constructor(
+        private _dataTransfer: DataTransferService
+    ) {
+    }
 
-  createModel(day:DayModel){
-    this.dayModel = day;
-    this.dataSource.next(this.dataSource.value?.map(day =>
-      day.date === this.dayModel.date ? { ...day } : day
-    ))
-  }
+    createModel(event: EventsDTO) {
+        this.day = {};
+        this.subscription.push(
+            this._dataTransfer.weeks.subscribe(
+                days => {
+                    this.weeks = days;
+                }
+            )
+        )
+        this.day = this.weeks.filter(day => day?.date?.getTime() === event.date?.getTime())[0];
+        console.log(this.day)
 
+        // if(this.day?.events){
+        //     this.day.events?.push(event);
+        // }
+
+
+
+    }
+
+    ngOnDestroy() {
+        this.subscription.forEach(el => el.unsubscribe());
+    }
 }
